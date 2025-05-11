@@ -35,12 +35,14 @@ RUN \
   # Get the official code from Prowlarr team
   cd /app/prowlarr/ && \
   git clone -b develop --single-branch https://github.com/Prowlarr/Prowlarr.git && \
-  # Update the User-Agent
-  cd /app/prowlarr/Prowlarr/src/NzbDrone.Common/Http && \
-  sed -i "s+_userAgent .*;+_userAgent = \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\";+g" UserAgentBuilder.cs && \ 
-  sed -i "s+_userAgentSimplified .*;+_userAgentSimplified = \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\";+g" UserAgentBuilder.cs && \ 
-  cd /app/prowlarr/Prowlarr/src/NzbDrone.Core/Indexers/Definitions && \
-  sed -i "/^.*Obsolete.*$/d" AudioBookBay.cs && \
+# Update the User-Agent
+cd /app/prowlarr/Prowlarr/src/NzbDrone.Common/Http && \
+sed -i "s+_userAgent .*;+_userAgent = \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\";+g" UserAgentBuilder.cs && \
+sed -i "s+_userAgentSimplified .*;+_userAgentSimplified = \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\";+g" UserAgentBuilder.cs && \
+# Modify the AudiobookBay Indexer URL
+cd /app/prowlarr/Prowlarr/src/NzbDrone.Core/Indexers/Definitions && \
+sed -i 's|"https://audiobookbay.is/"|"https://audiobookbay.lu/"|g' AudioBookBay.cs && \
+sed -i "/^.*Obsolete.*$/d" AudioBookBay.cs
   # Build the application
   cd /app/prowlarr/Prowlarr/ && \
   yarn install && \
